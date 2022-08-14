@@ -1,0 +1,125 @@
+﻿@model BayInvoiceViewModel
+@{
+    ViewData["Title"] = "Invoice";
+}
+<form asp-action="Invoice">
+<div class="row pt-3" style="background:#7ecff9">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>المورد</label>
+            <select class="form-control" asp-for="NewBuyInovice.SupplierId" asp-items="@(new SelectList(Model.SupplierList,"SupplierId","SupplierName"))">
+                <option value="">أختر أسم المورد</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>التاريخ</label>
+            <input class="form-control" type="date" asp-for="NewBuyInovice.Date" value="@(DateTime.Now.ToString("yyyyy-MM-dd"))" />
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row" style="background:#7ecff9">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>الفئة</label>
+            <select class="form-control" asp-items="@(new SelectList(Model.CategoryList,"CategoryId","CategoryName"))" id="ddlCategoryId" onchange="ShowProduct()">
+                <option value="">أختر أسم الفئة</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>الصنف</label>
+            <select class="form-control" id="ddlProduct" onchange="ShowPrice()">
+                <option value="">أختر أسم الصنف</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>الكمية</label>
+            <input class="form-control" type="number" value="1" id="quntity"/>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>السعر</label>
+            <input class="form-control" type="number" value="0" id="price"/>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group">
+            <label>اضافة</label>
+            <a class="btn btn-success btn-small" onclick="SavaPrducts()" style="color:#ffff"><i class="fa fa-download"></i></a>
+        </div>
+    </div>
+</div>
+<hr />
+
+
+
+
+<div class="row">
+    <div class="col-md-12" style="height:200px; overflow-y:auto;">
+        <table class="table table-striped table-bordered table-hover w-100">
+            <thead style="background:#a7f5b9">
+                <tr>
+                    <td class="col-1">#</td>
+                    <td class="col-2">الفئة</td>
+                    <td class="col-4">الصنف</td>
+                    <td class="col-1">السعر</td>
+                    <td class="col-1">الكمية</td>
+                    <td class="col-2">الاجمالي</td>
+                    <td class="col-1">الاحداث</td>
+                </tr>
+            </thead>
+            <tbody id="tablebody">
+               
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr />
+
+
+
+<div class="row pt-3" style="background:#a7f5b9">
+    <div class="col-md-4  mb-1">
+        <input class="btn btn-success" type="submit" value="حفظ الفاتورة" /> |
+        <input class="btn btn-danger"  value="حذف البيانات" />
+    </div>
+    <div class="col-md-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" >بعد الخصم</span>
+            </div>
+            <input class="form-control" readonly type="number" asp-for="NewBuyInovice.afterDiscount" id="afterDescount" value="0" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">خصم</span>
+            </div>
+            <input class="form-control" asp-for="NewBuyInovice.Discount" type="number" id="discount" value="0" />
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" >الاجمالي</span>
+            </div>
+            <input class="form-control" asp-for="NewBuyInovice.Total" readonly type="number" id="allTotal" value="0" />
+        </div>
+    </div>
+</div>
+</form>
+@section Scripts{
+    <script src="~/Moduels/Invoice.js"></script>
+}
